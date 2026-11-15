@@ -18,18 +18,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Google.Apis.Auth" Version="1.77.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.33" />
-    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="8.23.0" />
-    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.23.0" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Folder Include="Services\" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\CsLib\GoogleIdentification\GoogleIdentification.csproj" />
+    <ProjectReference Include="..\..\CsLib\ApiTokenServices\ApiTokenServices.csproj" />
+    <ProjectReference Include="..\..\CsLib\GoogleTokenServices\GoogleTokenServices.csproj" />
   </ItemGroup>
 
 </Project>

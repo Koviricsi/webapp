@@ -5,7 +5,11 @@ VisualStudioVersion = 17.14.36414.22
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoogleAuthenticator", "GoogleAuthenticator.csproj", "{99E58651-56BB-75C0-9438-5DF688E480D9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoogleIdentification", "..\..\CsLib\GoogleIdentification\GoogleIdentification.csproj", "{A5595845-A4F5-E030-D346-D82762CBDC3D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TokenServices", "..\..\CsLib\TokenServices\TokenServices.csproj", "{B97214BF-26C7-43AC-CF9B-E0D4414AB860}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiTokenServices", "..\..\CsLib\ApiTokenServices\ApiTokenServices.csproj", "{C0F02E8E-1222-A60F-426E-7D02167D6186}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoogleTokenServices", "..\..\CsLib\GoogleTokenServices\GoogleTokenServices.csproj", "{2A6A78D6-D204-8A50-932C-26171FCF1424}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +21,18 @@ Global
 		{99E58651-56BB-75C0-9438-5DF688E480D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{99E58651-56BB-75C0-9438-5DF688E480D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{99E58651-56BB-75C0-9438-5DF688E480D9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A5595845-A4F5-E030-D346-D82762CBDC3D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A5595845-A4F5-E030-D346-D82762CBDC3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A5595845-A4F5-E030-D346-D82762CBDC3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A5595845-A4F5-E030-D346-D82762CBDC3D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B97214BF-26C7-43AC-CF9B-E0D4414AB860}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B97214BF-26C7-43AC-CF9B-E0D4414AB860}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B97214BF-26C7-43AC-CF9B-E0D4414AB860}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B97214BF-26C7-43AC-CF9B-E0D4414AB860}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C0F02E8E-1222-A60F-426E-7D02167D6186}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C0F02E8E-1222-A60F-426E-7D02167D6186}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C0F02E8E-1222-A60F-426E-7D02167D6186}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C0F02E8E-1222-A60F-426E-7D02167D6186}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2A6A78D6-D204-8A50-932C-26171FCF1424}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A6A78D6-D204-8A50-932C-26171FCF1424}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A6A78D6-D204-8A50-932C-26171FCF1424}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A6A78D6-D204-8A50-932C-26171FCF1424}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

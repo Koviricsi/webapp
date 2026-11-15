@@ -1,70 +1,92 @@
-﻿using Google.Apis.Auth;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Cors.Infrastructure;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
+﻿using GoogleTokenServices;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Options;
+using System.Net.Http.Headers;
 using System.Security.Claims;
-using GoogleAuthenticator.Models;
-using GoogleIdentification;
 
+var builder = WebApplication.CreateBuilder(args);
 
-namespace GoogleAuthenticator
-{
-    public class Program
+// A két autentikációs szolgáltatás regisztrációja.
+GoogleTokenService.AddAuthentication(builder);
+ApiTokenService.AddAuthentication(builder);
+
+builder.Services.AddCors(options => 
+    options.AddPolicy("Frontend", policy =>
     {
-        public static void Main(string[] args)
-        {
-            var builder = WebApplication.CreateBuilder(args);
+        policy
+            .WithOrigins(["https://teszt.hbsz.eu", "http://localhost:5500", "https://localhost:5173"])
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    }));
+builder.Services.AddAuthorization();
 
-            // Service hozzáadása
-            builder.Services.AddAuthorization();
-            GoogleJwtTokenService.AddJwtAuthentication(builder);
-            builder.Services.AddCors(AddCorsPolicy);
+var app = builder.Build();
+app.UseCors("Frontend");
+app.UseAuthentication();
+app.UseAuthorization();
 
-            var app = builder.Build();
-            app.UseCors("Frontend");
-            app.UseHttpsRedirection();
-            app.UseAuthentication();
-            app.UseAuthorization();
+#region USER
+// GET /user/me
+app.MapGet("/users/me", (HttpContext context) =>
+{
+    var user = context.User;
 
-            #region Auth/Google
-            app.MapPost("/auth/google",
-                (GoogleJwtTokenService tokenService,
-                HttpContext context,
-                GoogleLoginRequest request) => tokenService.GoogleLogin(context.User, request))
-                .AllowAnonymous();
+    return Results.Ok(new
+    {
+        Subject = user.FindFirstValue(ClaimTypes.NameIdentifier),
+        Email = user.FindFirstValue(ClaimTypes.Email),
+        GivenName = user.FindFirstValue(ClaimTypes.GivenName),
+        FamilyName = user.FindFirstValue(ClaimTypes.Surname),
+        Picture = user.FindFirstValue("picture")
+    });
+})
+.RequireAuthorization(new AuthorizeAttribute
+{
+    AuthenticationSchemes = "ApiToken"
+});
+#endregion
 
-            app.MapDelete("/auth/google",
-                (GoogleJwtTokenService tokenService,
-                HttpContext context) => tokenService.GoogleLogout(context.User))
-                .RequireAuthorization();
-            #endregion
+#region LOGIN/LOGOUT
+// POST /auth/login
+app.MapPost("/auth/login", (
+    HttpContext context,
+    ApiTokenService apiTokenService) =>
+{
+    var token = apiTokenService.CreateToken(context.User);
 
-            #region User
-            app.MapGet("/users/me",
-                (ClaimsPrincipal principal) => Results.Ok(new User
-                {
-                    Id = principal.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "",
-                    FirstName = principal.FindFirst(ClaimTypes.GivenName)?.Value ?? "",
-                    LastName = principal.FindFirst(ClaimTypes.Name)?.Value ?? "",
-                    Email = principal.FindFirst(ClaimTypes.Email)?.Value ?? "",
-                    ProfileImageUrl = principal.FindFirst("ProfileImageUrl")?.Value ?? ""
-                }))
-                .RequireAuthorization();
-            #endregion
+    return Results.Ok(new
+    {
+        AccessToken = token,
+        TokenType = "Bearer"
+    });
+})
+.RequireAuthorization(new AuthorizeAttribute
+{
+    AuthenticationSchemes = "GoogleToken"
+});
 
-            app.Run();
-        }
+// POST /auth/logout
+app.MapPost("/auth/logout", (
+    HttpContext context,
+    ApiTokenService apiTokenService) =>
+{
+    var authorization = context.Request.Headers.Authorization.ToString();
 
-        private static void AddCorsPolicy(CorsOptions options)
-        {
-            options.AddPolicy("Frontend", policy =>
-            {
-                policy
-                    .WithOrigins([ "https://teszt.hbsz.eu", "http://localhost:5500", "https://localhost:5173"])
-                    .AllowAnyHeader()
-                    .AllowAnyMethod();
-            });
-        }
+    if (!AuthenticationHeaderValue.TryParse(authorization, out var header) ||
+        !header.Scheme.Equals("Bearer", StringComparison.OrdinalIgnoreCase) ||
+        string.IsNullOrWhiteSpace(header.Parameter))
+    {
+        return Results.Unauthorized();
     }
-}
+
+    apiTokenService.DeleteToken(header.Parameter);
+
+    return Results.NoContent();
+})
+.RequireAuthorization(new AuthorizeAttribute
+{
+    AuthenticationSchemes = "ApiToken"
+});
+#endregion
+
+app.Run();
