@@ -32,7 +32,7 @@ export default class GoogleAuthenticator extends IAuthenticator {
                 auto_prompt: false,
                 class: 'gsi',
                 ux_mode: 'popup',
-                client_id: this.client.options.client_id,
+                client_id: this.#clientId,
                 callback: this.#responseHandler
             });
 
