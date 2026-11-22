@@ -1,29 +1,56 @@
-h1 {
+:host {
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(at center, #fecc 40%, #8caf), url('./assets/bg1.jpg') center / cover no-repeat;
+}
+
+header {
+    padding: 0.5rem;
+    background-color: #0004;
+}
+
+header>div {
+    display: flex;
+    margin: 0 auto;
+    align-items: center;
+    height: 8rem;
+    width: fit-content;
+}
+
+header>div>h1 {
     margin: 0;
     font-size: 2rem;
     text-align: center;
 }
 
+header>div>img {
+    height: 100%;
+}
+
 main {
+    padding: 1rem;
     flex: 1;
     display: flex;
     justify-content: center;
 }
 
-.view {
-    width: fit-content;
-    background-color: #24c4;
+.login-view {
+    width: 20rem;
+    background-color: #48e8;
+    padding: 1rem;
     border-radius: 1rem;
     box-shadow:  2px 1px 8px #0004;
+    text-align: center;
     align-items: center;
 }
 
-.login {
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    text-align: center;
-    justify-content: space-around;
+.login-view {
+    font-size: 0.8rem;
+}
+
+.login-container {
+    width: fit-content;
+    margin: 0 auto;
 }
 
 .user {
