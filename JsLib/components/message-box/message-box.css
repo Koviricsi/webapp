@@ -1,0 +1,39 @@
+:host {
+    --bg-colorDark: #ccc8;
+    --bg-colorLight: #fff4;
+    --padding: 0.4rem;
+    --border-width: 2px;
+    --font-size: 1rem;
+    --font-family: monospace;
+    --msgbox-transparency: 0.8;
+
+    position: fixed;
+    border: var(--border-width) solid var(--bg-colorDark);
+    background-color: var(--bg-colorLight);
+    border-radius: 8px;
+    display: block;
+    z-index: 9999;
+    font-size: var(--font-size);
+    font-family: var(--font-family);
+}
+
+h1.header {
+    margin: 0 0 0.5rem;
+    text-align: center;
+    background-color: var(--bg-colorLight);
+}
+
+div.body {
+    padding: var(--padding);
+}
+
+div.buttons {
+    padding: var(--padding);
+    display: flex;
+    justify-content: space-around;
+}
+
+button {
+    background-color: var(--bg-colorLight);
+    font-size: var(--font-size);
+}
