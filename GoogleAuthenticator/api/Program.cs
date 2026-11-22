@@ -47,8 +47,8 @@ app.MapGet("/users/me", (HttpContext context) =>
 #endregion
 
 #region LOGIN/LOGOUT
-// POST /auth/login
-app.MapPost("/auth/login", (
+// POST /auth
+app.MapPost("/auth", (
     HttpContext context,
     ApiTokenService apiTokenService) =>
 {
@@ -56,8 +56,8 @@ app.MapPost("/auth/login", (
 
     return Results.Ok(new
     {
-        AccessToken = token,
-        TokenType = "Bearer"
+        accessToken = token,
+        tokenType = "Bearer"
     });
 })
 .RequireAuthorization(new AuthorizeAttribute
@@ -65,8 +65,8 @@ app.MapPost("/auth/login", (
     AuthenticationSchemes = "GoogleToken"
 });
 
-// POST /auth/logout
-app.MapPost("/auth/logout", (
+// DELETE /auth
+app.MapDelete("/auth", (
     HttpContext context,
     ApiTokenService apiTokenService) =>
 {
