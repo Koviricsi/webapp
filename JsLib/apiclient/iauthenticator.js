@@ -1,27 +1,34 @@
 export default class IAuthenticator {
     #client = null
-    get client() { return this.#client }
+    get client() {
+        return this.#client
+    }
+    
+    #container = null
+    get container() {
+        return this.#container
+    }
 
-    constructor(client) {
+    #config = null
+    get config() {
+        return this.#config
+    }
+
+    constructor(client, config) {
         this.#client = client
+        this.#config = config
     }
 
-    // getAuthenticationView() {
-    //     throw new Error('Not implemented!')
-    // }
+    async initialize({ container = null } = {}) {
+        this.#container = container
 
-    async initialize() {
+        const loading = (this.#config.dependencies ?? [])
+            .map(dependency => this.client.loadDependency(dependency))
+
+        await Promise.all(loading)
     }
 
-    async authenticate(response) {
+    async authenticate(context) {
         throw new Error('Not implemented!')
     }
-
-    // async clearAuthentication() {
-    //     throw new Error('Not implemented!')
-    // }
-
-    // async getAuthorizationInfo() {
-    //     throw new Error('Not implemented!')
-    // }
 }
