@@ -22,3 +22,22 @@ body {
     height: 100vh;
     background: radial-gradient(at center, #fff, #8c6);
 }
+
+
+@media (width < 800px) {
+    html {
+        font-size: 10pt
+    }
+}
+
+@media (width < 600px) {
+    html {
+        font-size: 8pt
+    }
+}
+
+@media (width < 400px) {
+    html {
+        font-size: 6pt
+    }
+}

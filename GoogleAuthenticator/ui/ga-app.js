@@ -32,8 +32,6 @@ class GoogleAuthenticatorApp extends WebApp {
             'transparency': 0.2
         })
         MessageBox.setOverlayColor('#210c')
-
-        MessageBox.showModal('baka baka baka baka', 'semmi')
     }
 
     authRequiredHandler(event) {
