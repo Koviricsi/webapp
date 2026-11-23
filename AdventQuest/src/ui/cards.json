@@ -10,7 +10,7 @@
         "answer":""
     },
     {
-        "date": "2026.11.20",
+        "date": "2026.11.21",
         "id": 14,
         "state": "closed",
         "image": "krampusz.png",
@@ -21,7 +21,7 @@
         "correct":"3"
     },
     {
-        "date": "2026.11.20",
+        "date": "2026.11.22",
         "state": "locked"
     }
 ]
