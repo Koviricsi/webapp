@@ -1,0 +1,12 @@
+:host{
+    display: block;
+    padding: 5dvw;
+    background-color: #5cd9ff;
+    color: white;
+    border-radius: 2dvw;
+    margin: 10px;
+}
+
+[hidden] {
+    display: none !important;
+}

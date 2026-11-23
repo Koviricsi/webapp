@@ -1,0 +1,18 @@
+[hidden] {
+    display: none !important;
+}
+
+:host{
+    height: 100%;
+}
+
+main{
+    height: 100%;
+}
+.login-view{
+    background-color: #d1d1d1;
+}
+.content-view{
+    display: flex;
+    background-color: #007cf0;
+}

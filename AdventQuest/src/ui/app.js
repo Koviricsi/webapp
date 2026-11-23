@@ -1,9 +1,14 @@
-import WebApp from '../../components/web-app/web-app.js'
+import WebApp from '../../../JsLib/components/web-app.js'
 import appSettings from './appsettings.json' with { type: 'json' }
 // import UserCard from '../../components/user-card/user-card.js'
-import MessageBox from '../../components/message-box/message-box.js'
+import MessageBox from '../../../JsLib/components/message-box/message-box.js'
+import AdventCard from './advent-card/advent-card.js'
 
 class AdventApp extends WebApp {
+
+    #cards
+    #contentContainer
+
     constructor() {
         super(appSettings)
     }
@@ -33,11 +38,31 @@ class AdventApp extends WebApp {
 
     initializeDom() {
         super.initializeDom()
-
+        this.#contentContainer = this.shadowRoot.querySelector('.content-view');
+        this.loadCards().then(() => this.createCards());
         // this.views['user-card'] = this.shadowRoot.querySelector('user-card')
         // this.shadowRoot.querySelector('section.content-view>button')
         //     .addEventListener('click', () => this.logout())
     }
+
+//#region Advent Cards
+    async loadCards(){
+        const cards = await fetch('cards.json').then(resp => {
+            if (!resp.ok)
+                throw new Error('Nem sikerült betölteni a kártyákat');
+            return resp;
+        }).then(resp => resp.json());
+        this.#cards = cards;
+        console.log(cards);
+    }
+
+    createCards(){
+        this.#cards.map(data => {
+            const card = new AdventCard(data);
+            this.#contentContainer.appendChild(card);
+        })
+    }
+//#endregion
 }
 
 customElements.define('advent-app', AdventApp)

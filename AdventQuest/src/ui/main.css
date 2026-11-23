@@ -16,12 +16,12 @@ body {
     width: 100vw;
     height: 100vh;
     margin: 0;
-    display: grid;
-    grid-template-rows: auto 1fr 4rem;
+    /*display: grid;
+    grid-template-rows: auto 1fr 4rem;*/
     background-color: purple;
 }
 
-header {
+/*header {
     background-color: cyan;
 }
 
@@ -61,4 +61,4 @@ footer {
     html {
         font-size: 6pt;
     }
-}
+}*/
