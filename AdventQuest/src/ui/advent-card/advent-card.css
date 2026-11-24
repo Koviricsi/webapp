@@ -1,10 +1,21 @@
 :host{
-    display: block;
-    padding: 5dvw;
-    background-color: #5cd9ff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 3cqmin !important;
+    background-image: url(../assets/backside-green1.png);
+    background-size: cover;
+    background-position: center;
     color: white;
-    border-radius: 2dvw;
+    border: solid #022d00 1cqmin;
+    border-radius: 2cqmin;
     margin: 10px;
+    aspect-ratio: 1/1.2;
+}
+
+img{
+    width: 30%;
 }
 
 [hidden] {
