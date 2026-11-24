@@ -1,8 +1,7 @@
 :host{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    display: grid;
+    grid-template-rows: repeat(6, 1fr);
+    justify-items: center;
     padding: 3cqmin !important;
     background-image: url(../assets/backside-green1.png);
     background-size: cover;
@@ -11,10 +10,42 @@
     border: solid #022d00 1cqmin;
     border-radius: 2cqmin;
     margin: 10px;
+    min-height: 300px;
     aspect-ratio: 1/1.2;
 }
 
-img{
+[data-field="date"]{
+    width: 100%;
+}
+
+[data-field="image"]{
+    width: 30%;
+}
+
+[data-field="question"]{
+    width: 80%;
+    text-align: center;
+}
+
+[data-field="options"]{
+    width: fit-content;
+    min-width: 8cqmin;
+    background-color: #790000;
+    border: solid #4f0000;
+    border-radius: 2cqmin;
+    color: #fff;
+    font-weight: bold;
+    text-align: center;
+    &:is(:hover,:active,:focus){
+        background-color: #910000;
+    }
+}
+
+[data-field="answer"]{
+    width: 30%;
+}
+
+[data-field="correct"]{
     width: 30%;
 }
 
