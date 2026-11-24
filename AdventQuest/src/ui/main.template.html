@@ -1,18 +1,19 @@
 <header>
-  <h1>Adventi Quiz</h1>
+  <h1 data-lang="app-title">Adventi Quiz</h1>
   <app-menu>
-    <div class="menu-item" right="user" data-lang="nav-kezdo">Kezdőlap</div>
-    <div class="menu-item" right="user">Eredmények</div>
-    <div class="menu-item" right="user">Kilépés</div>
+    <div class="menu-item" right="user" data-lang="nav-kezdolap">Kezdőlap</div>
+    <div class="menu-item" right="user" data-lang="nav-eredmenyek">Eredmények</div>
+    <div class="menu-item" right="user" data-lang="nav-kilepes">Kilépés</div>
   </app-menu>
 </header>
 <main>
   <section class="login-view" hidden>
     <div class="login-wrapper">
-      <span>Ho ho ho!</span><h3>Jelentkezz be kispajtás!</h3>
-      <div class="login-container" ></div>
+      <span data-lang="login-greeting">Ho ho ho!</span>
+      <h3 data-lang="login-prompt">Jelentkezz be kispajtás!</h3>
+      <div class="login-container"></div>
     </div>
   </section>
   <section class="content-view"></section>
 </main>
-<footer>2026. HBSZ</footer>
+<footer data-lang="footer-copyright">2026. HBSZ</footer>
