@@ -91,6 +91,8 @@ class AdventCard extends HTMLElement {
     }
 
     btSendAnswer.addEventListener("click", () => {
+      btSendAnswer.disabled = true;
+      this.shadowRoot.querySelector("[data-field='options']").disabled = true;
       const answer = this.shadowRoot.querySelector(
         '[data-field="options"]',
       ).value;

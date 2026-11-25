@@ -34,12 +34,10 @@ document.addEventListener("language-change", (e) => {
 });
 // #endregion
 
-/* TESZTELÉSHEZ
 setTimeout(() => {
   document.dispatchEvent(
     new CustomEvent("language-change", {
       detail: { lang: "de" },
     }),
   );
-}, 1500);
-*/
+}, 500);
