@@ -1,13 +1,17 @@
 import _css from "./advent-card.css" with { type: "css" };
-const _html = await fetch(import.meta.resolve("./advent-card.html")).then(
-  (resp) => resp.text(),
-);
+
+let _html = "";
+try {
+  const resp = await fetch(import.meta.resolve("./advent-card.html"));
+  if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+  _html = await resp.text();
+} catch (err) {
+  console.error("Nem sikerült betölteni az advent-card.html sablont:", err);
+}
 
 class AdventCard extends HTMLElement {
   #initialized = false;
   #cardData;
-  #date = "?";
-  #state;
 
   constructor(cardData) {
     super();
@@ -27,12 +31,17 @@ class AdventCard extends HTMLElement {
     this.shadowRoot.adoptedStyleSheets = [_css];
     this.shadowRoot.innerHTML = _html;
 
-    if (!this.#cardData) return;
+    if (!this.#cardData || typeof this.#cardData !== "object") {
+      console.warn("AdventCard: érvénytelen vagy hiányzó cardData.", this.#cardData);
+      this.dataset.state = "locked";
+      return;
+    }
 
     // Állapot beállítása és zárolt jelzés hozzáadása
     this.dataset.state = this.#cardData.state ?? "locked";
-    if (this.dataset.state === "locked") {
-      this.shadowRoot.querySelector('[data-field="date"]').textContent += "🔒";
+    const dateElem = this.shadowRoot.querySelector('[data-field="date"]');
+    if (this.dataset.state === "locked" && dateElem) {
+      dateElem.textContent += "🔒";
     }
 
     this.#setupCardFlip();
@@ -42,7 +51,6 @@ class AdventCard extends HTMLElement {
   // #endregion
 
   // #region Eseménykezelők és mezők feltöltése
-  // Kártya átfordítása csak a háttérre kattintva (ha nincs zárolva)
   #setupCardFlip() {
     if (this.dataset.state === "locked") return;
 
@@ -52,27 +60,38 @@ class AdventCard extends HTMLElement {
     });
   }
 
-  // Adatok betöltése a HTML sablon mezőibe
   #populateFields() {
     for (const [key, value] of Object.entries(this.#cardData)) {
-      if (!value) continue;
+      if (value === null || value === undefined || value === "") continue;
 
       const elem = this.shadowRoot.querySelector(`[data-field="${key}"]`);
       if (!elem) continue;
 
       if (key === "options") {
-        elem.innerHTML = value
+        if (this.dataset.state === "closed") continue;
+
+        const opts = String(value)
           .split(";")
+          .map((opt) => opt.trim())
+          .filter(Boolean);
+
+        if (!opts.length) continue;
+
+        elem.innerHTML = opts
           .map((opt) => `<option value="${opt}">${opt}</option>`)
           .join("");
 
-        // Lezárt kártyánál a választás letiltása és a mentett válasz beállítása
-        if (this.dataset.state === "closed") {
+        if (this.#cardData.answer) {
           elem.disabled = true;
-          elem.value = this.#cardData.answer ?? "";
+          elem.value = this.#cardData.answer;
         }
       } else if (key === "image") {
-        elem.src = value.startsWith("http") ? value : `./assets/${value}`;
+        elem.onerror = () => {
+          console.warn(`Hibás képútvonal: ${elem.src}`);
+          elem.closest(".image-wrapper")?.setAttribute("hidden", "");
+          elem.hidden = true;
+        };
+        elem.src = String(value).startsWith("http") ? value : `./assets/${value}`;
       } else {
         elem.textContent += value;
       }
@@ -81,21 +100,28 @@ class AdventCard extends HTMLElement {
     }
   }
 
-  // Válasz küldése gomb beállítása vagy eltávolítása
   #setupSubmitButton() {
     const btSendAnswer = this.shadowRoot.querySelector(".btSendAnswer");
+    if (!btSendAnswer) return;
 
-    if (this.dataset.state !== "open") {
+    if (this.dataset.state !== "open" || this.#cardData.answer) {
       btSendAnswer.remove();
       return;
     }
 
     btSendAnswer.addEventListener("click", () => {
+      const selectElem = this.shadowRoot.querySelector('[data-field="options"]');
+      const answer = selectElem?.value;
+
+      if (!answer) {
+        alert("Kérlek, válassz egy lehetőséget a beküldés előtt!");
+        return;
+      }
+
+      if (!confirm("Biztosan rögzíteni szeretnéd a válaszodat?")) return;
+
       btSendAnswer.disabled = true;
-      this.shadowRoot.querySelector("[data-field='options']").disabled = true;
-      const answer = this.shadowRoot.querySelector(
-        '[data-field="options"]',
-      ).value;
+      if (selectElem) selectElem.disabled = true;
 
       this.dispatchEvent(
         new CustomEvent("answer-submitted", {
@@ -113,6 +139,8 @@ class AdventCard extends HTMLElement {
   // #endregion
 }
 
-customElements.define("advent-card", AdventCard);
+if (!customElements.get("advent-card")) {
+  customElements.define("advent-card", AdventCard);
+}
 
 export default AdventCard;

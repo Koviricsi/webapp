@@ -17,6 +17,7 @@
   border-radius: 2cqmin;
   color: white;
   cursor: pointer;
+  user-select: none;
   transform: perspective(1000px) rotateY(0deg);
   transition: transform 1s ease-in-out;
 
@@ -65,6 +66,10 @@
     opacity: 1;
     transition: opacity 0s 0.5s;
   }
+}
+
+:host([data-state="open"]) [data-field="answer"] {
+  display: none;
 }
 
 :host([data-state="open"])::before {
@@ -120,27 +125,37 @@
 
 .image-wrapper {
   width: 50%;
+  aspect-ratio: 1 / 1;
   padding: 1cqmin !important;
   background-color: #420000;
   border-radius: 1cqmin;
+  box-sizing: border-box;
+  flex-shrink: 0;
 }
 
 [data-field="image"] {
-  position: relative;
+  display: block;
   width: 100%;
-  &::before {
-    content: "";
-    inset: 0;
-    position: absolute;
-    background-color: red;
-  }
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 0.6cqmin;
 }
+
 [data-field="question"] {
   font-family: "Chewy", system-ui;
-  font-size: calc(0.5rem + 1.6cqmin);
+  font-size: max(0.95rem, calc(0.5rem + 1.6cqmin));
+  line-height: 1.25;
   letter-spacing: 0.1cqmin;
   text-align: justify;
   text-justify: distribute;
+  overflow-wrap: break-word;
+  hyphens: auto;
+  max-height: 28%;
+  overflow-y: auto;
+  padding-right: 1cqmin !important;
+  scrollbar-width: thin;
+  scrollbar-color: #e5b84b transparent;
 }
 
 [data-field="options"],
@@ -154,6 +169,7 @@
   text-align: center;
   letter-spacing: 0.04em;
   box-sizing: border-box;
+  flex-shrink: 0;
 }
 
 [data-field="options"] {
@@ -195,6 +211,9 @@
   color: #f3e9d2;
   border: 0.25cqmin solid rgba(229, 184, 75, 0.45);
   box-shadow: inset 0 0.2cqmin 0.8cqmin rgba(0, 0, 0, 0.6);
+  &::before {
+    content: "Válaszod: ";
+  }
 }
 
 [data-field="correct"] {
@@ -208,6 +227,9 @@
   box-shadow:
     0 0.4cqmin 1.2cqmin rgba(0, 0, 0, 0.45),
     0 0 1.2cqmin rgba(123, 232, 123, 0.35);
+  &::before {
+    content: "Helyes: ";
+  }
 }
 
 .btSendAnswer {
@@ -224,6 +246,7 @@
     0 0.6cqmin 1.5cqmin rgba(0, 0, 0, 0.55),
     inset 0 0.2cqmin 0.3cqmin rgba(255, 255, 255, 0.35);
   cursor: pointer;
+  flex-shrink: 0;
   transition:
     filter 0.15s ease,
     box-shadow 0.2s ease;
@@ -241,7 +264,39 @@
     box-shadow: inset 0 0.4cqmin 1cqmin rgba(0, 0, 0, 0.7);
   }
 
-  &:disabled{
+  &:disabled {
     filter: grayscale(1);
+  }
+}
+
+/* Mobil nézet: nagyobb kártyák és olvashatóbb belső tartalom */
+@media (max-width: 600px) {
+  :host {
+    width: 82vw;
+    height: 100vw;
+    min-width: 270px;
+    min-height: 330px;
+    padding: 4.5vw !important;
+  }
+
+  [data-field="date"] {
+    font-size: clamp(1.8rem, 8vw, 2.5rem);
+  }
+
+  .image-wrapper {
+    width: 58%;
+  }
+
+  [data-field="question"] {
+    font-size: clamp(1rem, 4.2vw, 1.25rem);
+  }
+
+  [data-field="options"],
+  [data-field="answer"],
+  [data-field="correct"],
+  .btSendAnswer {
+    width: 90%;
+    padding: 2.5vw 4vw;
+    font-size: clamp(0.95rem, 3.8vw, 1.15rem);
   }
 }
